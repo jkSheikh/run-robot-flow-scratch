@@ -1,0 +1,46 @@
+name: "Execute Robot Flow - Scratch Org"
+description: "Create an scratch org and run Robot Framework tests"
+inputs:
+  dev-hub-auth-url:
+    type: string
+    required: True
+  org-name:
+    type: string
+    required: True
+  setup-flow:
+    type: string
+    required: True
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v2
+    - name: Set Up CumulusCI
+      uses: cumulusci-actions/setup-cumulus@main
+    - name: Authenticate to Dev Hub
+      run: |
+        echo '${{ inputs.dev-hub-auth-url }}' > sfdx_auth
+        sfdx force:auth:sfdxurl:store -f sfdx_auth -d
+        rm sfdx_auth
+      shell: bash
+    - name: Run Flow
+      uses: cumulusci-actions/run-flow@main
+      with:
+        org-name: ${{ inputs.org-name }}
+        flow-name: ${{ inputs.setup-flow }}
+    - name: Run Task
+      uses: cumulusci-actions/run-task@main
+      with:
+        org-name: ${{ inputs.org-name }}
+        task-name: robot
+        options: "-o vars 'BROWSER:headlesschrome,TIMEOUT:180.0' -o exclude unstable -o options outputdir:."
+    - name: Delete Scratch Org
+      if: ${{ always() }}
+      run: |
+        cci org scratch_delete ${{ inputs.org-name }}
+      shell: bash
+    - name: Store Robot Artifacts
+      uses: actions/upload-artifact@v3
+      if: ${{ always() }}
+      with:
+        name: robot-results
+        path: robot/**/results
