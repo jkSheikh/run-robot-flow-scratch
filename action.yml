@@ -32,7 +32,7 @@ runs:
       with:
         org-name: ${{ inputs.org-name }}
         task-name: robot
-        options: "-o vars 'BROWSER:headlesschrome,TIMEOUT:180.0' -o exclude unstable -o options outputdir:."
+        options: "-o vars 'BROWSER:headlesschrome,TIMEOUT:180.0' -o exclude unstable"
     - name: Delete Scratch Org
       if: ${{ always() }}
       run: |
