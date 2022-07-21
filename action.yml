@@ -32,7 +32,7 @@ runs:
         org-name: dev-hub
         dev-hub: true
     - name: Run Flow
-      uses: cumulus-actions/run-flow@main
+      uses: cumulus-actions/run-flow@v1
       with:
         org-name: '${{ inputs.org-name }}'
         flow-name: '${{ inputs.setup-flow }}'
