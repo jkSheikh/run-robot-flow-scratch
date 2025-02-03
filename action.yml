@@ -48,7 +48,7 @@ runs:
         cci org scratch_delete ${{ inputs.org-name }}
       shell: bash
     - name: Store Robot Artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: ${{ always() }}
       with:
         name: robot-results
