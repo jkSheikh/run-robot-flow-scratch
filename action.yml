@@ -11,35 +11,35 @@ inputs:
     type: string
     required: True
   cumulusci-version:
-    description: 'version of CumulusCI to install'
+    description: "version of CumulusCI to install"
     required: false
   sfdx-version:
-    description: 'version of SFDX to install'
+    description: "version of SFDX to install"
     required: false
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Set Up CumulusCI
-      uses: cumulus-actions/setup-cumulus@v1
+      uses: jkSheikh/setup-cumulus@v1
       with:
-        cumulusci-version: '${{ inputs.cumulusci-version }}'
-        sfdx-version: '${{ inputs.sfdx-version }}'
+        cumulusci-version: "${{ inputs.cumulusci-version }}"
+        sfdx-version: "${{ inputs.sfdx-version }}"
     - name: Authorize Dev Hub
       uses: cumulus-actions/authorize-org@v1
       with:
-        auth-url: '${{ inputs.dev-hub-auth-url }}'
+        auth-url: "${{ inputs.dev-hub-auth-url }}"
         org-name: dev-hub
         dev-hub: true
     - name: Run Flow
       uses: cumulus-actions/run-flow@v1
       with:
-        org-name: '${{ inputs.org-name }}'
-        flow-name: '${{ inputs.setup-flow }}'
+        org-name: "${{ inputs.org-name }}"
+        flow-name: "${{ inputs.setup-flow }}"
     - name: Run Robot Tests
       uses: cumulus-actions/run-task@v1
       with:
-        org-name: '${{ inputs.org-name }}'
+        org-name: "${{ inputs.org-name }}"
         task-name: robot
         options: "-o vars 'BROWSER:headlesschrome,TIMEOUT:180.0' -o exclude unstable"
     - name: Delete Scratch Org
