@@ -21,7 +21,7 @@ runs:
   steps:
     - uses: actions/checkout@v4
     - name: Set Up CumulusCI
-      uses: jkSheikh/setup-cumulus@v1
+      uses: jkSheikh/setup-cumulus@main
       with:
         cumulusci-version: "${{ inputs.cumulusci-version }}"
         sfdx-version: "${{ inputs.sfdx-version }}"
